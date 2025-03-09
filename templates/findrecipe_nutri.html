@@ -4,10 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Search by Nutrition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .recipe {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px auto;
+            width: 50%;
+            background: #f9f9f9;
+        }
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Search for Recipes by Nutritional Requirements</h1>
-    <form action="/search_by_nutrition" method="POST">
+    <form id="nutritionForm">
         <label for="protein_min">Min Protein (grams):</label>
         <input type="number" id="protein_min" name="protein_min" required>
 
@@ -17,20 +35,49 @@
         <button type="submit">Search</button>
     </form>
 
-    <div id="result"></div>
+    <div id="recipes"></div>
 
     <script>
-        document.querySelector("form").addEventListener("submit", async function(event) {
+        document.getElementById("nutritionForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             const protein_min = document.getElementById("protein_min").value;
             const protein_max = document.getElementById("protein_max").value;
+
             const response = await fetch("/search_by_nutrition", {
                 method: "POST",
                 body: new URLSearchParams({ protein_min, protein_max }),
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             });
+
             const data = await response.json();
-            document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
+            const recipesDiv = document.getElementById("recipes");
+            recipesDiv.innerHTML = ""; // Clear previous results
+
+            if (data.length === 0) {
+                recipesDiv.innerHTML = "<p>No recipes found in this protein range.</p>";
+                return;
+            }
+
+            data.forEach(recipe => {
+                const recipeHTML = `
+                    <div class="recipe">
+                        <h2>${recipe.recipe}</h2>
+                        <img src="${recipe.image}" alt="${recipe.recipe}">
+                        <p><strong>Category:</strong> ${recipe.category.category}</p>
+                        <p><strong>Calories:</strong> ${recipe.calories} kcal</p>
+                        <p><strong>Fat:</strong> ${recipe.fat_in_grams}g | <strong>Carbs:</strong> ${recipe.carbohydrates_in_grams}g | <strong>Protein:</strong> ${recipe.protein_in_grams}g</p>
+                        <p><strong>Ingredients:</strong></p>
+                        <ul>
+                            ${Object.keys(recipe).filter(key => key.startsWith("ingredient_") && recipe[key]).map(key => `<li>${recipe[key]}</li>`).join('')}
+                        </ul>
+                        <p><strong>Steps:</strong></p>
+                        <ol>
+                            ${Object.keys(recipe).filter(key => key.startsWith("directions_step_") && recipe[key]).map(key => `<li>${recipe[key]}</li>`).join('')}
+                        </ol>
+                    </div>
+                `;
+                recipesDiv.innerHTML += recipeHTML;
+            });
         });
     </script>
 </body>
