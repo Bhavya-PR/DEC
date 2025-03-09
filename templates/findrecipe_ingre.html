@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Search by Ingredient</title>
+</head>
+<body>
+    <h1>Search for Recipes by Ingredient</h1>
+    <form action="/search_by_ingredient" method="POST">
+        <label for="ingredient">Ingredient:</label>
+        <input type="text" id="ingredient" name="ingredient" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const ingredient = document.getElementById("ingredient").value;
+            const response = await fetch("/search_by_ingredient", {
+                method: "POST",
+                body: new URLSearchParams({ ingredient }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            });
+            const data = await response.json();
+            document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
