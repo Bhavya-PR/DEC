@@ -29,7 +29,7 @@ def search_by_ingredient():
     ingredient = request.form['ingredient']
     querystring = {"ingredient": ingredient}
     
-    response = requests.get(API_URL + "find", headers=HEADERS, params=querystring)
+    response = requests.get(API_URL, headers=HEADERS, params=querystring)
     
     if response.status_code == 200:
         return jsonify(response.json())
