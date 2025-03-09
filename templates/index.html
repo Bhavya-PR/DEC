@@ -1,23 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page</title>
-  </head>
-  <body>
-    <h1>Welcome to Spoonacular Recipe Finding Web Application</h1>
-
-    <a href="/findrecipe_ingre"
-      ><button type="submit">Find Recipes by Ingredients</button></a
-    >
-    <br /><br />
-
-    <a href="/findrecipe_nutri"
-      ><button type="submit">
-        Find Recipes by Nutritional Requirements
-      </button></a
-    >
-    <br /><br />
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        h1 {
+            color: #333;
+            font-size: 32px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 15px;
+            font-size: 18px;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Recipe Finder App 🍽️</h1>
+        <p>Find delicious recipes based on ingredients or nutritional values!</p>
+        
+        <a href="/findrecipe_ingre" class="btn">🔍 Find Recipes by Ingredients</a>
+        <br>
+        <a href="/findrecipe_nutri" class="btn">🥗 Find Recipes by Nutrition</a>
+    </div>
+</body>
 </html>
