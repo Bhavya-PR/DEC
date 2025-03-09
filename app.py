@@ -26,13 +26,24 @@ def findrecipe_nutri():
 
 @app.route('/search_by_ingredient', methods=['POST'])
 def search_by_ingredient():
-    ingredient = request.form['ingredient']
-    querystring = {"ingredient": ingredient}
-    
+    ingredient = request.form['ingredient'].lower()  # Convert input to lowercase
+    querystring = {}  # No direct filtering via API, so we fetch all data
+
     response = requests.get(API_URL, headers=HEADERS, params=querystring)
-    
+
     if response.status_code == 200:
-        return jsonify(response.json())
+        all_recipes = response.json()
+        
+        # 🔥 Filtering recipes that contain the searched ingredient
+        filtered_recipes = []
+        for recipe in all_recipes:
+            for key, value in recipe.items():
+                if key.startswith("ingredient_") and value:  # Check all ingredients
+                    if ingredient in value.lower():  # Match user input with recipe ingredient
+                        filtered_recipes.append(recipe)
+                        break  # Stop checking once a match is found
+        
+        return jsonify(filtered_recipes)
     else:
         return jsonify({"error": "Failed to fetch data", "status_code": response.status_code}), response.status_code
 
