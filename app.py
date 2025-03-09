@@ -49,19 +49,22 @@ def search_by_ingredient():
 
 @app.route('/search_by_nutrition', methods=['POST'])
 def search_by_nutrition():
-    protein_min = float(request.form['protein_min'])  # Convert input to float
+    protein_min = float(request.form['protein_min'])  
     protein_max = float(request.form['protein_max'])
 
     response = requests.get(API_URL, headers=HEADERS)
-
+    
     if response.status_code == 200:
         all_recipes = response.json()
 
-        # 🔥 Filtering recipes that fall within the protein range
+        # 🔥 Filtering recipes that have valid protein values
         filtered_recipes = [
             recipe for recipe in all_recipes
-            if "protein_in_grams" in recipe and protein_min <= recipe["protein_in_grams"] <= protein_max
+            if "protein_in_grams" in recipe and isinstance(recipe["protein_in_grams"], (int, float))
+            and protein_min <= recipe["protein_in_grams"] <= protein_max
         ]
+
+        print("Filtered Recipes:", filtered_recipes)  # Debugging output
 
         return jsonify(filtered_recipes)
     else:

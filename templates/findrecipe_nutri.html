@@ -21,6 +21,15 @@
             width: 100%;
             border-radius: 10px;
         }
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background: #ff5c5c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -37,7 +46,13 @@
 
     <div id="recipes"></div>
 
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+
     <script>
+        function goBack() {
+            window.location.href = "/";
+        }
+
         document.getElementById("nutritionForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             const protein_min = document.getElementById("protein_min").value;
