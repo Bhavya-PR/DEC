@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Search by Nutrition</title>
+</head>
+<body>
+    <h1>Search for Recipes by Nutritional Requirements</h1>
+    <form action="/search_by_nutrition" method="POST">
+        <label for="protein_min">Min Protein (grams):</label>
+        <input type="number" id="protein_min" name="protein_min" required>
+
+        <label for="protein_max">Max Protein (grams):</label>
+        <input type="number" id="protein_max" name="protein_max" required>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const protein_min = document.getElementById("protein_min").value;
+            const protein_max = document.getElementById("protein_max").value;
+            const response = await fetch("/search_by_nutrition", {
+                method: "POST",
+                body: new URLSearchParams({ protein_min, protein_max }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            });
+            const data = await response.json();
+            document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
