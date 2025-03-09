@@ -8,6 +8,22 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .back-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background: #ff5c5c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container {
+            margin-top: 60px; /* Prevents content from overlapping with Back button */
         }
         .recipe {
             border: 1px solid #ddd;
@@ -21,28 +37,21 @@
             width: 100%;
             border-radius: 10px;
         }
-        .back-btn {
-            margin-top: 20px;
-            padding: 10px;
-            background: #ff5c5c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
-    <h1>Search for Recipes by Ingredient</h1>
-    <form id="searchForm">
-        <label for="ingredient">Ingredient:</label>
-        <input type="text" id="ingredient" name="ingredient" required>
-        <button type="submit">Search</button>
-    </form>
-
-    <div id="recipes"></div>
-
     <button class="back-btn" onclick="goBack()">⬅ Back</button>
+
+    <div class="container">
+        <h1>Search for Recipes by Ingredient</h1>
+        <form id="searchForm">
+            <label for="ingredient">Ingredient:</label>
+            <input type="text" id="ingredient" name="ingredient" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="recipes"></div>
+    </div>
 
     <script>
         function goBack() {
