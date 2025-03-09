@@ -3,7 +3,6 @@ import requests
 
 app = Flask(__name__)
 
-# API Details
 API_URL = "https://keto-diet.p.rapidapi.com/"
 API_KEY = "db8b36227cmsh36904c604d3a623p128502jsn3760ceaa8a89"
 
@@ -26,22 +25,21 @@ def findrecipe_nutri():
 
 @app.route('/search_by_ingredient', methods=['POST'])
 def search_by_ingredient():
-    ingredient = request.form['ingredient'].lower()  # Convert input to lowercase
-    querystring = {}  # No direct filtering via API, so we fetch all data
+    ingredient = request.form['ingredient'].lower()  
+    querystring = {}  
 
     response = requests.get(API_URL, headers=HEADERS, params=querystring)
 
     if response.status_code == 200:
         all_recipes = response.json()
         
-        # 🔥 Filtering recipes that contain the searched ingredient
         filtered_recipes = []
         for recipe in all_recipes:
             for key, value in recipe.items():
-                if key.startswith("ingredient_") and value:  # Check all ingredients
-                    if ingredient in value.lower():  # Match user input with recipe ingredient
+                if key.startswith("ingredient_") and value:  
+                    if ingredient in value.lower():  
                         filtered_recipes.append(recipe)
-                        break  # Stop checking once a match is found
+                        break  
         
         return jsonify(filtered_recipes)
     else:
@@ -57,14 +55,13 @@ def search_by_nutrition():
     if response.status_code == 200:
         all_recipes = response.json()
 
-        # 🔥 Filtering recipes that have valid protein values
         filtered_recipes = [
             recipe for recipe in all_recipes
             if "protein_in_grams" in recipe and isinstance(recipe["protein_in_grams"], (int, float))
             and protein_min <= recipe["protein_in_grams"] <= protein_max
         ]
 
-        print("Filtered Recipes:", filtered_recipes)  # Debugging output
+        print("Filtered Recipes:", filtered_recipes)  
 
         return jsonify(filtered_recipes)
     else:
